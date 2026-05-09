@@ -1,1 +1,247 @@
-IoT-Based Smart Energy Monitoring System (SEMS) ⚡An open-source, IoT-enabled smart energy monitoring system designed to tackle high electricity bills by providing real-time, appliance-level energy consumption data.  Unlike traditional monthly energy bills that only show aggregated usage , SEMS empowers users to identify energy-wasting appliances and hidden "phantom loads" (standby power) to make informed, energy-efficient decisions.  🌟 Key FeaturesAppliance-Level Monitoring: Tracks individual power consumption of household devices rather than just the main breaker.  Real-Time Cost Calculation: Computes instantaneous power, cumulative energy usage, and estimated electricity costs based on predefined tariffs.  Threshold Alerts: Generates real-time visual and dashboard alerts when energy consumption exceeds safe or predefined limits.  IoT Dashboard Integration: Transmits real-time data via MQTT to a cloud-based subscriber dashboard for remote monitoring.  Fanless Thermal Design: Housed in a custom 3D-modeled ABS enclosure optimized for natural convection cooling.  🛠️ System ArchitectureThe project bridges the gap between software simulation and physical hardware deployment through a four-part architecture:1. MATLAB/Simulink ModelingBefore hardware assembly, the entire system logic was modeled and validated in MATLAB/Simulink.  Appliance Subsystems: Modeled realistic power behaviors for refrigerators, water heaters, and standby loads.  MQTT Simulation: Implemented a Zero-Order Hold (ZOH) block to simulate periodic MQTT publish rates to a cloud dashboard without needing a physical Wi-Fi connection during testing.  2. Hardware & PCB DesignThe control logic is driven by an ESP32-DevKitC.  Custom PCB: A two-layer PCB houses the ESP32, an HLK-PM01 AC-DC power supply, and relay banks.  Circuit Protection: Inductive relay loads are driven by 2N2222 transistors and protected by 1N4007 flyback diodes to prevent high-voltage back-EMF spikes from destroying the microcontroller.  Safety First: Strict trace width and isolation gaps are maintained between high-voltage AC mains and low-voltage DC logic.  3. Mechanical Enclosure & Thermal ValidationA custom electromechanical enclosure was modeled in SolidWorks.  Thermal Simulation: To prevent the ESP32 and power supply from overheating in a sealed box, we conducted a thermal analysis using SolidWorks Flow Simulation.  Results: The internal layout utilizes natural buoyancy-driven airflow. Simulation proved the system maintains a safe internal operating temperature of ~28°C under continuous load, eliminating the need for active cooling fans.  📂 Repository Contents/Simulink_Models - MATLAB/Simulink files for system logic and MQTT dashboard simulation./Hardware - PCB layout and schematic files./Mechanical - SolidWorks assembly files, enclosure models, and thermal simulation reports./Docs - Full technical reports and project documentation.👥 ContributorsThis project was collaboratively developed by undergraduate engineering students from the University of Moratuwa:P.H.N.D. Jayawardana: Literature review, technical content organization, and IEEE paper formatting.  P.G.I. Jithmal: Mechanical enclosure design, hardware prototyping, PCB layout, and thermal simulation (SolidWorks).  T.M. Kannangara: System design, implementation, and simulation using MATLAB/Simulink (power calculations, IoT logic).  
+# ⚡ IoT-Based Smart Energy Monitoring System (SEMS)
+
+An open-source, IoT-enabled **Smart Energy Monitoring System (SEMS)** designed to help users reduce electricity costs through **real-time, appliance-level energy monitoring**.
+
+Unlike conventional electricity bills that only provide total monthly consumption, SEMS delivers detailed insights into the energy usage of individual appliances, enabling users to identify:
+
+* ⚠️ Energy-intensive devices
+* 🔌 Phantom loads (standby power consumption)
+* 📉 Inefficient energy usage patterns
+
+By combining **IoT connectivity**, **real-time analytics**, and **thermal-safe embedded hardware**, SEMS provides a scalable and intelligent approach to modern home energy management.
+
+---
+
+# 🌟 Key Features
+
+## 🔍 Appliance-Level Monitoring
+
+Tracks power consumption of individual household devices instead of monitoring only the main power line.
+
+## 💰 Real-Time Cost Estimation
+
+Calculates:
+
+* Instantaneous power consumption
+* Total accumulated energy usage
+* Estimated electricity cost based on predefined tariff rates
+
+## 🚨 Threshold-Based Alerts
+
+Provides visual and dashboard alerts when power consumption exceeds predefined safe or energy-efficient limits.
+
+## ☁️ IoT Dashboard Integration
+
+Uses MQTT communication to publish real-time energy data to a cloud-connected dashboard for remote monitoring.
+
+## 🌡️ Fanless Thermal Design
+
+Integrated within a custom-designed ABS enclosure optimized for passive cooling using natural convection airflow.
+
+---
+
+# 🛠️ System Architecture
+
+The SEMS platform integrates software simulation, embedded hardware, PCB design, and mechanical thermal analysis into a unified energy monitoring solution.
+
+---
+
+## 1️⃣ MATLAB/Simulink System Modeling
+
+Before hardware implementation, the system was fully modeled and validated using MATLAB/Simulink.
+
+### Features Implemented
+
+* Realistic appliance power behavior simulations
+* Refrigerator load modeling
+* Water heater energy profiles
+* Standby power (phantom load) simulations
+
+### MQTT Communication Simulation
+
+A **Zero-Order Hold (ZOH)** block was used to simulate periodic MQTT data publishing without requiring physical Wi-Fi hardware during testing.
+
+### Objectives
+
+* Validate energy calculations
+* Verify IoT communication logic
+* Test system behavior before hardware deployment
+
+---
+
+## 2️⃣ Hardware & PCB Design
+
+The embedded control system is built around the **ESP32-DevKitC** microcontroller platform.
+
+### 🔧 Hardware Components
+
+* ESP32-DevKitC
+* HLK-PM01 AC-DC Power Supply
+* Relay Control Banks
+* 2N2222 Transistors
+* 1N4007 Flyback Diodes
+
+### ⚡ Protection & Reliability
+
+To protect the ESP32 from relay-induced voltage spikes:
+
+* Relay coils are transistor-driven using **2N2222 BJTs**
+* **1N4007 flyback diodes** suppress back-EMF generated by inductive loads
+
+### 🛡️ Electrical Safety
+
+PCB layout design follows strict isolation standards:
+
+* Proper AC/DC separation
+* Safe trace widths
+* Isolation gaps between high-voltage and low-voltage sections
+
+---
+
+## 3️⃣ Mechanical Enclosure & Thermal Validation
+
+A custom enclosure was designed using **SolidWorks** to ensure safe and reliable operation.
+
+### 🧊 Thermal Analysis
+
+SolidWorks Flow Simulation was used to evaluate:
+
+* Internal heat distribution
+* Airflow behavior
+* Passive cooling efficiency
+
+### ✅ Thermal Results
+
+The enclosure design leverages **natural buoyancy-driven airflow**, maintaining an internal operating temperature of approximately:
+
+> **~28°C under continuous operating conditions**
+
+This eliminates the need for active cooling fans while ensuring safe operation of:
+
+* ESP32 microcontroller
+* AC-DC power supply
+* Relay circuitry
+
+---
+
+# 📡 IoT Workflow
+
+```text
+Appliances → Sensors → ESP32 → MQTT Broker → Cloud Dashboard
+```
+
+The ESP32 continuously:
+
+1. Measures appliance energy usage
+2. Computes power and cost data
+3. Publishes data via MQTT
+4. Updates the remote dashboard in real time
+
+---
+
+# 📂 Repository Structure
+
+```bash
+SEMS/
+│
+├── Simulink_Models/
+│   ├── MATLAB and Simulink models
+│   └── MQTT simulation files
+│
+├── Hardware/
+│   ├── PCB schematics
+│   ├── PCB layouts
+│   └── Circuit design files
+│
+├── Mechanical/
+│   ├── SolidWorks assemblies
+│   ├── Enclosure CAD models
+│   └── Thermal simulation reports
+│
+├── Docs/
+│   ├── Technical reports
+│   ├── IEEE paper
+│   └── Project documentation
+│
+└── README.md
+```
+
+---
+
+# 🔬 Technologies Used
+
+| Category         | Technologies                                      |
+| ---------------- | ------------------------------------------------- |
+| Embedded Systems | ESP32-DevKitC                                     |
+| Simulation       | MATLAB / Simulink                                 |
+| Communication    | MQTT Protocol                                     |
+| PCB Design       | Altium / KiCad / EasyEDA *(update as applicable)* |
+| CAD Modeling     | SolidWorks                                        |
+| Thermal Analysis | SolidWorks Flow Simulation                        |
+
+---
+
+# 🎯 Project Objectives
+
+* Reduce unnecessary electricity consumption
+* Increase user awareness of appliance-level energy usage
+* Detect hidden standby power losses
+* Provide affordable and scalable smart energy monitoring
+* Demonstrate integration of IoT, simulation, hardware, and mechanical engineering
+
+---
+
+# 📈 Future Improvements
+
+* 📱 Mobile application integration
+* ☁️ Cloud database storage
+* 🤖 AI-based energy consumption prediction
+* 🔋 Renewable energy monitoring integration
+* 📊 Advanced analytics dashboard
+* 🔔 Smart notification system
+
+---
+
+# 👥 Contributors
+
+This project was collaboratively developed by undergraduate engineering students from the University of Moratuwa.
+
+## 👨‍💻 P.H.N.D. Jayawardana
+
+* Literature review
+* Technical content organization
+* IEEE paper formatting
+
+## 👨‍🔧 P.G.I. Jithmal
+
+* Mechanical enclosure design
+* Hardware prototyping
+* PCB layout design
+* Thermal simulation using SolidWorks
+
+## 👨‍💻 T.M. Kannangara
+
+* System design
+* MATLAB/Simulink modeling
+* Power calculations
+* IoT communication logic
+
+---
+
+# 📜 License
+
+This project is released as an open-source academic and research initiative.
+
+You are free to use, modify, and improve the system for educational and non-commercial purposes.
+
+---
+
+# ⭐ Acknowledgement
+
+Special thanks to the Department of Electrical Engineering, University of Moratuwa, for the academic guidance and support provided throughout the development of this project.
+
+---
+
+# 🚀 Smart Energy Starts with Smart Monitoring
+
+> “Measure intelligently, consume efficiently.”
